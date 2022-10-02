@@ -29,6 +29,38 @@ function evaluate( A::Array{Base.Int64,1}, candidate,n)
 end
 
 
+#
+# Print the actual values in the solution
+#
+function printSolution(values::Array{Base.Int64,1},solution,n)
+    print("The value in the solution for the partition problem ")
+    powerOf2 = 1 
+    sum1 = 0
+    sum2 = 0
+    print("In the first partition: ")
+    for i = 1:n
+        if (solution & powerOf2 != 0) 
+            print(values[i]," ")
+            sum1 += values[i]
+        
+        end
+        powerOf2 = powerOf2 * 2
+    end
+    println()
+    println("Sum: ",sum1)
+    print("In the second partition: ")
+    powerOf2 = 1
+    for i = 1:n
+        if (solution & powerOf2 == 0) 
+            print(values[i]," ")        
+            sum2 += values[i]
+        end
+        powerOf2 = powerOf2 * 2
+    end
+    println()
+    println("Sum: ",sum2)
+end
+
 function solverPartition()
 nString = readline()
 n = tryparse(Base.Int64,nString)
@@ -59,7 +91,9 @@ Threads.@threads for i = 1:possibleSubSets
     #    println(i," is not a solution")
     end
 end
-println("Set of solutions: ",setOfSolutions)
+#println("Set of solutions: ",setOfSolutions)
+println("A solution is ",first(setOfSolutions))
+printSolution(values,first(setOfSolutions),n)
 end
  
 elapsedTime = @elapsed solverPartition()
